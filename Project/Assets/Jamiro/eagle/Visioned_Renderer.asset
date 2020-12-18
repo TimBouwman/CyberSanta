@@ -16,6 +16,7 @@ MonoBehaviour:
   - {fileID: 2087758069844790183}
   - {fileID: 167617363102375362}
   - {fileID: 2782964537098240514}
+  m_RendererFeatureMap: 
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
   shaders:
     blitPS: {fileID: 4800000, guid: c17132b1f77d20942aa75f8429c0f8bc, type: 3}
@@ -37,6 +38,7 @@ MonoBehaviour:
     passOperation: 0
     failOperation: 0
     zFailOperation: 0
+  m_ShadowTransparentReceive: 1
 --- !u!114 &167617363102375362
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -49,6 +51,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b3d386ba5cd94485973aee1479b272e, type: 3}
   m_Name: Enemy
   m_EditorClassIdentifier: 
+  m_Active: 1
   settings:
     passTag: Enemy
     Event: 300
@@ -87,6 +90,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b3d386ba5cd94485973aee1479b272e, type: 3}
   m_Name: Target
   m_EditorClassIdentifier: 
+  m_Active: 1
   settings:
     passTag: Target
     Event: 300
@@ -125,6 +129,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b3d386ba5cd94485973aee1479b272e, type: 3}
   m_Name: Ally
   m_EditorClassIdentifier: 
+  m_Active: 1
   settings:
     passTag: Ally
     Event: 300
