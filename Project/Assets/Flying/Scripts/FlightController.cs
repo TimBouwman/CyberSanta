@@ -19,15 +19,13 @@ public class FlightController : MonoBehaviour
     [SerializeField] private float minPitchInput = 0.1f;
     [SerializeField] private float maxPitchInput = 0.3f;
     [SerializeField] private float pitchSpeed = 5f;
-    [Header("Roll")]
-    [SerializeField] private float minRollInput = 5f;
-    [SerializeField] private float maxRollInput = 30f;
-    private float maxRollInputQuaternion = 0f;
-    [SerializeField] private float rollSpeed = 5f;
-    [Header("Roll")]
+    [Header("Yaw")]
     [SerializeField] private float minYawInput = 5f;
     [SerializeField] private float maxYawInput = 30f;
-    [SerializeField] private float YawSpeed = 5f;
+    private float maxYawInputQuaternion = 0f;
+    [SerializeField] private float yawSpeed = 5f;
+
+    [SerializeField] private Transform wheel = null;
     #endregion
 
     #region Unity Methods
@@ -38,14 +36,16 @@ public class FlightController : MonoBehaviour
 
     private void Update()
     {
-        inputObjectIndex.position = inputObject.position;
-        inputObjectIndex.rotation = inputObject.rotation;
+        wheel.localPosition = new Vector3(0, 0, inputObjectIndex.localPosition.z);
+        wheel.GetChild(0).transform.localEulerAngles = new Vector3(0, 0, inputObjectIndex.localEulerAngles.z);
+
         input = inputObjectIndex.localPosition;
 
-        Movement(input.z, movementSpeed, minMovementInput, Multiplier(maxMovementInput, input.z));
-        /*Pitch*/ Steering(input.y, -pitchSpeed, minPitchInput, Vector3.right, Multiplier(maxPitchInput, input.y));
-        /*Roll*/  Steering(inputObjectIndex.localEulerAngles.z, rollSpeed, minRollInput, Vector3.forward, Multiplier(maxRollInputQuaternion, inputObjectIndex.localRotation.z));
-        /*Yaw*/   Steering(input.x, YawSpeed, minYawInput, Vector3.up, Multiplier(maxYawInput, input.x));
+        //Movement(input.z, movementSpeed, minMovementInput, Multiplier(maxMovementInput, input.z));
+        /*Pitch*/ Steering(input.z, pitchSpeed, minPitchInput, Vector3.right, Multiplier(maxPitchInput, input.y));
+        /*Yaw*/   Steering(inputObjectIndex.localEulerAngles.z, -yawSpeed, minYawInput, Vector3.up, Multiplier(maxYawInputQuaternion, inputObjectIndex.localRotation.z));
+
+        print(Multiplier(maxPitchInput, input.y));
     }
     #endregion
 
@@ -53,8 +53,8 @@ public class FlightController : MonoBehaviour
     private void Setup()
     {
         //change eulerangle.z to a quaternion value this is done to make the inspector more user friendly
-        inputObjectIndex.localEulerAngles = new Vector3(0, 0, maxRollInput);
-        maxRollInputQuaternion = inputObjectIndex.localRotation.z;
+        inputObjectIndex.localEulerAngles = new Vector3(0, 0, maxYawInput);
+        maxYawInputQuaternion = inputObjectIndex.localRotation.z;
         inputObjectIndex.localEulerAngles = Vector3.zero;
     }
 
@@ -65,8 +65,8 @@ public class FlightController : MonoBehaviour
     }
     private void Steering(float input, float speed, float min, Vector3 axis, float multiplier)
     {
-       // if (input > min || input < -min)
-            this.transform.Rotate(axis * (speed * input) * Time.deltaTime);
+        //if (input > min || input < -min)
+            this.transform.Rotate(axis * (speed * multiplier) * Time.deltaTime);
     }
 
     private float Multiplier(float max, float input)
